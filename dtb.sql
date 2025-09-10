@@ -1,8 +1,7 @@
--- Create Database
 CREATE DATABASE pharmacy_ecommerce;
 USE pharmacy_ecommerce;
 
--- Users Table (Customers, Admin, Pharmacists, Delivery Staff)
+
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -13,14 +12,14 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Categories of Medicines
+
 CREATE TABLE categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     description TEXT
 );
 
--- Medicines
+
 CREATE TABLE medicines (
     medicine_id INT AUTO_INCREMENT PRIMARY KEY,
     category_id INT,
@@ -34,7 +33,7 @@ CREATE TABLE medicines (
     FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
--- Prescriptions (uploaded by users for restricted medicines)
+
 CREATE TABLE prescriptions (
     prescription_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -44,7 +43,7 @@ CREATE TABLE prescriptions (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
--- Orders
+
 CREATE TABLE orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
@@ -54,7 +53,6 @@ CREATE TABLE orders (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
--- Order Items
 CREATE TABLE order_items (
     order_item_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
@@ -65,7 +63,7 @@ CREATE TABLE order_items (
     FOREIGN KEY (medicine_id) REFERENCES medicines(medicine_id)
 );
 
--- Payments
+
 CREATE TABLE payments (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
@@ -83,14 +81,14 @@ INSERT INTO users (name, email, phone, password, role) VALUES
 ('Admin User', 'admin@pharmacy.com', '0700112233', 'hashed_password4', 'admin'),
 ('Paul Rider', 'paul@delivery.com', '0733445566', 'hashed_password5', 'delivery');
 
--- Insert categories
+
 INSERT INTO categories (name, description) VALUES
 ('Pain Relief', 'Medicines for headache, body pain, etc.'),
 ('Antibiotics', 'Prescription required antibiotics.'),
 ('Vitamins & Supplements', 'Nutritional supplements.'),
 ('Cough & Cold', 'Medicines for flu, cough, and cold.');
 
--- Insert medicines
+
 INSERT INTO medicines (category_id, name, description, price, prescription_required, stock, image_url) VALUES
 (1, 'Paracetamol 500mg', 'Pain reliever and fever reducer.', 100.00, FALSE, 200, 'images/paracetamol.jpg'),
 (1, 'Ibuprofen 200mg', 'Anti-inflammatory pain reliever.', 250.00, FALSE, 150, 'images/ibuprofen.jpg'),
@@ -98,24 +96,23 @@ INSERT INTO medicines (category_id, name, description, price, prescription_requi
 (3, 'Vitamin C 1000mg', 'Boosts immunity.', 300.00, FALSE, 300, 'images/vitamin_c.jpg'),
 (4, 'Cough Syrup 100ml', 'Relieves cough and sore throat.', 200.00, FALSE, 120, 'images/cough_syrup.jpg');
 
--- Insert prescriptions (example upload for restricted medicine)
+
 INSERT INTO prescriptions (user_id, file_url, status) VALUES
 (1, 'uploads/prescriptions/Calvin_prescription.pdf', 'pending'),
 (2, 'uploads/prescriptions/Briannah_prescription.pdf', 'approved');
 
--- Insert orders
-INSERT INTO orders (user_id, total_price, status) VALUES
+
+INSERT INTO orders (uer_id, total_price, status) VALUES
 (1, 350.00, 'pending'),
 (2, 650.00, 'approved');
 
--- Insert order items
 INSERT INTO order_items (order_id, medicine_id, quantity, price) VALUES
 (1, 1, 2, 200.00),   -- Calvin ordered 2 Paracetamol
 (1, 5, 1, 150.00),   -- Calvin ordered 1 Cough Syrup
 (2, 3, 1, 450.00),   -- Briannah ordered Amoxicillin (needs prescription)
 (2, 4, 2, 200.00);   -- Briannah ordered 2 Vitamin C
 
--- Insert payments
+
 INSERT INTO payments (order_id, amount, method, status, paid_at) VALUES
 (1, 350.00, 'mpesa', 'paid', NOW()),
 (2, 650.00, 'card', 'paid', NOW());
