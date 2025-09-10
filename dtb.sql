@@ -73,7 +73,7 @@ CREATE TABLE payments (
     paid_at TIMESTAMP NULL,
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
--- Insert sample users
+
 INSERT INTO users (name, email, phone, password, role) VALUES
 ('Calvin Daye', 'calvin@example.com', '0712345678', 'hashed_password1', 'customer'),
 ('Briannah blue', 'blue@example.com', '0722334455', 'hashed_password2', 'customer'),
